@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% from '/pagination.html' import pagination %}
+
+{% block content %}
+    <h1 class="my-5">Последние посты</h1>
+    <div class="row mb-3">
+        {% for book in values %}
+            <div class="col-md-6 d-flex">
+                <div class="card mb-4">
+                    <img src="/get_image?md5={{book.md5}}&mime={{book.mime}}" alt="Image">
+                    <div class="card-body">
+                        <h2 class="card-title">{{ book.name }}</h2>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Опубликовано в {{ book.year }} году.
+                        Жанры: {{ book.genres }}
+                        Средняя оценка: {{ book.mark }}
+                        К-во рецензий: {{ book.reviews }}
+                        <div class="col d-flex">
+                            {% if current_user.can('show',user) %}
+                                <a class="btn btn-dark" href="{{url_for('show_book', index=book.id)}}">Просмотр</a>
+                            {% endif %}
+                            {% if current_user.can('edit',user) %}
+                                <a class="btn btn-dark" href="{{url_for('admin.edit_book', index=book.id)}}">Редактирование</a>
+                            {% endif %}
+                            {% if current_user.can('delete',user) %}
+                            <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal_{{book.id}}">Удалить</a>
+                            <!-- Модальное окно -->
+                            <div class="modal fade" id="deleteModal_{{book.id}}" tabindex="-1" aria-labelledby="deleteModalLabel_{{book.id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered"> 
+                                <div class="modal-content">
+                                    <!-- Заголовок модального окна -->
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel_{{book.id}}">Удаление книги</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <!-- Тело модального окна -->
+                                    <div class="modal-body">
+                                    Вы уверены, что хотите удалить книгу {{book.name}}?
+                                    </div>
+                                    <!-- Футер модального окна -->
+                                    <div class="modal-footer">
+                                    <a type="button" class="btn btn-danger" href="{{url_for('admin.delete_book', index=book.id)}}">Да</a>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Нет</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {{pagination(count, page)}}
+    <div class="col text-center">
+        <button class="btn btn-secondary" type="button">
+            <a class="nav-link text-white" href="{{url_for('admin.create')}}">Создать книгу</a>
+        </button>
+    </div>
+    
+{% endblock %}

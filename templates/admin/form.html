@@ -1,0 +1,135 @@
+{% macro form_user(name, values=None, name_message=None, about_message=None, author_message=None, pub_message=None, pages_message=None, year_message=None, genres=None, book_start=None)%}
+<form method="POST" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label for="name" class="form-label">Имя</label>
+    <input
+      name="name"
+      type="name"
+      class="form-control"
+      id="name"
+      aria-describedby="nameHelp"
+      value="{{book_start.name or ''}}"
+    />
+    {% if name_message %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ name_message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
+    <label for="about" class="form-label">О книге</label>
+    <textarea
+      name="about"
+      class="form-control"
+      id="about"
+      aria-describedby="aboutHelp"
+    >{{book_start.about or ''}}</textarea>
+    {% if about_message %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ about_message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
+    <label for="author" class="form-label">Автор</label>
+    <input
+      name="author"
+      type="author"
+      class="form-control"
+      id="author"
+      aria-describedby="authorHelp"
+      value="{{book_start.author or ''}}"
+    />
+    {% if author_message %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ author_message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
+    <label for="pub" class="form-label">Издательство</label>
+    <input
+      name="pub"
+      type="pub"
+      class="form-control"
+      id="pub"
+      aria-describedby="pubHelp"
+      value="{{book_start.pub or ''}}"
+    />
+    {% if pub_message %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ pub_message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
+    <label for="pages" class="form-label">К-во страниц</label>
+    <input
+      name="pages"
+      type="pages"
+      class="form-control"
+      id="pages"
+      aria-describedby="pagesHelp"
+      value="{{book_start.pages or ''}}"
+    />
+    {% if pages_message %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ pages_message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
+    <label for="year" class="form-label">Год издания</label>
+    <input
+      name="year"
+      type="year"
+      class="form-control"
+      id="year"
+      aria-describedby="yearHelp"
+      value="{{book_start.year or ''}}"
+    />
+    {% if year_message %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ year_message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+  </div>
+
+    <label for="genres" class="form-label">Жанры</label>
+    <select name="genres" class="form-select" id="genres" aria-describedby="genresHelp" multiple>
+      {% for genre in genres %}
+        <option value="{{genre.name}}" >{{genre.name}}</option>
+      {% endfor %}
+    </select>
+    {% if genres_message %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ genres_message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+  </div>
+
+  {% if request.path == '/admin/create'%}
+
+  <div class="mb-3">
+    <label for="userfile" class="form-label">Обложка книги</label>
+    <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
+    <input name="userfile" type="file" />
+  </div>
+
+  {% endif %}
+
+  <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+{% endmacro%}

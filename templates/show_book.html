@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="my-5">{{ values.name }}</h1>
+    <h4 class="my-5">{{ values.author }}, в {{values.year}} году</h4>
+    <div class="container ">
+        <img class='img-fluid' width="100%" src="/get_image?md5={{skin.md5}}&mime={{skin.mime}}" alt="Image">
+    </div>
+    {{ values.about }} 
+
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-body">
+                {% if my_review: %}
+                <div class="d-flex">
+                    <h5> Ваша рецензия</h5>
+                    <div class="flex-grow-1 ms-3">
+                        <p>Оценка: {{ my_review.mark }}</p>
+                        <p>Описание: {{ my_review.text }}</p>
+                        <p>Дата: {{ my_review.data }}</p>
+                    </div>
+                </div>  
+                {% else: %}
+                <button class="btn btn-secondary" type="button">
+                    <a class="nav-link text-white" href="{{url_for('review.create', index=values.id)}}">Написать рецензию</a>
+                </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="container col">
+        {% for review in reviews %}
+            {% if review.login != my_review.login:%}
+            <div class="d-flex container col">
+                <h5>{{ review.login }}</h5>
+                <div class="flex-grow-1 ms-3 container col">
+                    <p>Оценка: {{ review.mark }}</p>
+                    <p>Описание: {{ review.text }}</p>
+                    <p>Дата: {{ review.data }}</p>
+                </div>
+            </div>
+            {% endif %}        
+        {% endfor %}
+    </div>
+{% endblock %}

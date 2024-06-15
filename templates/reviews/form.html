@@ -1,0 +1,22 @@
+{% macro form_review(name, book_id, user_id) %}
+<form method="POST">
+  <div class="mb-3">
+    <label for="rating" class="form-label">Оценка</label>
+    <select class="form-select" aria-label="Default select example" id="rating" name="rating">
+      <option value="5" selected>Отлично</option>
+      <option value="4">Хорошо</option>
+      <option value="3">Удовлетворительно</option>
+      <option value="2">Неудовлетворительно</option>
+      <option value="1">Плохо</option>
+      <option value="0">Ужасно</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label for="text" class="form-label">Текст рецензии</label>
+    <textarea class="form-control" id="text" name="text" rows="5"></textarea>
+  </div>
+  <input type="hidden" name="book_id" value="{{ book_id }}">
+  <input type="hidden" name="user_id" value="{{ user_id }}">
+  <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+{% endmacro %}

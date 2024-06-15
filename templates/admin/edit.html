@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% from '/admin/form.html' import form_user %}
+{% block content %}
+    <div class="container">
+        <h1>Редактирование книги</h1>
+      {{form_user('', values, name_message, about_message, author_message, pub_message, pages_message, year_message, genres, book_start)}}
+    </div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% from '/reviews/form.html' import form_review %}
+{% block content %}
+    <div class="container">
+        <h1>Создание рецензии</h1>
+      {{form_review(name, book_id, user_id)}}
+    </div>
+{% endblock %}
