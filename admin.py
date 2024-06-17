@@ -6,17 +6,9 @@ import mysql.connector
 from app import db
 import os
 import hashlib
+from reviews import admin_required, moder_required
 
 bp_admin = Blueprint('admin', __name__, url_prefix='/admin')
-
-def admin_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if not current_user.is_authenticated or not current_user.is_admin():
-            flash('У вас недостаточно прав для доступа к данной странице.', 'danger')
-            return redirect(url_for('index'))
-        return f(*args, **kwargs)
-    return decorated_function
 
 def validate(name, about, author, pub, pages, year, genres, userfile):
     errors = {}
@@ -30,11 +22,11 @@ def validate(name, about, author, pub, pages, year, genres, userfile):
         errors['pub_message'] = "Издательство не должно быть пустым"
     if not pages:
         errors['pages_message'] = "К-во страниц не должно быть пустым"
-    if not year or len(year) != 4:
-        errors['year_message'] = "Год должен иметь 4 цифры"
+    if not year or int(year) < 1900 or int(year) > 2155 :
+        errors['year_message'] = "Год должен быть в пределах от 1900 до 2155"
     if not genres:
         errors['genres_message'] = "Жанры не могут быть пустыми"
-    if not userfile or userfile != 'Ok':
+    if not userfile:
         errors['userfile_message'] = "Обложка не может быть пустой"
     
     return errors
@@ -57,17 +49,15 @@ def create():
         pages = request.form['pages']
         year = request.form['year']
         genres = request.form.getlist('genres')
-        userfile = request.form.get('userfile')
-
-        md5_hash = hashlib.md5(userfile.read()).hexdigest()
-        mime_type = userfile.mimetype
-        name_f = f"{md5_hash}.{mime_type.split('/')[1]}"
-
-        
+        userfile = request.files['userfile']
 
         errors = validate(name, about, author, pub, pages, year, genres, userfile)
         if len(errors.keys()) > 0:
-            return render_template('admin/create.html', genres = genres_start)
+            return render_template('admin/create.html', genres = genres_start, **errors)
+
+        md5_hash = hashlib.md5(userfile.read()).hexdigest()
+        mime_type = userfile.mimetype
+        name_f = f"{md5_hash}.{mime_type.split('/')[1]}"       
 
         try:
             query = '''
@@ -77,7 +67,7 @@ def create():
             cursor.execute(query, (md5_hash, ))
             skin = cursor.fetchone()
             cursor.close()
-            if skin.id == None:
+            if not skin:
                 query = '''
                 insert into Skins (md5, mime, name) values (%s, %s, %s)
                 '''
@@ -157,6 +147,7 @@ def create():
 
 
 @bp_admin.route('/edit_book/<int:index>', methods = ['POST', 'GET'])
+@moder_required
 def edit_book(index):
     query = '''select name from Genres'''
     cursor = db.connection().cursor(named_tuple=True)
@@ -192,14 +183,7 @@ def edit_book(index):
             db.connection().commit()
             cursor.close()
 
-            query = '''
-                select id from Books ORDER BY id DESC LIMIT 1
-                '''
-            cursor = db.connection().cursor(named_tuple=True)
-            cursor.execute(query)
-            book = cursor.fetchone()
-            cursor.close()
-            flash(f'Книга {book.id} успешно создана.', 'success')
+            flash(f'Книга {index} успешно создана.', 'success')
         except mysql.connector.errors.DatabaseError:
             db.connection().rollback()
             flash(f'При создании книги произошла ошибка.', 'danger')
@@ -227,7 +211,7 @@ def edit_book(index):
                     insert into GenresBooks (bid, gid) Values (%s, %s)
                     '''
                 cursor = db.connection().cursor(named_tuple=True)
-                cursor.execute(query, (book.id, genreId.id))
+                cursor.execute(query, (index, genreId.id))
                 db.connection().commit()
                 cursor.close()
             flash(f'Жанры успешно созданы.', 'success')
@@ -239,6 +223,7 @@ def edit_book(index):
     return render_template('admin/edit.html', genres = genres_start, book_start=book_start) 
 
 @bp_admin.route('/delete/<int:index>')
+@admin_required
 def delete_book(index):
     try:
         query = '''

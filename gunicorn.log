@@ -18,3 +18,7 @@
 [2024-06-12 09:44:54 +0300] [11427] [CRITICAL] WORKER TIMEOUT (pid:12756)
 [2024-06-12 09:44:55 +0300] [11427] [ERROR] Worker (pid:12756) was sent SIGKILL! Perhaps out of memory?
 [2024-06-12 09:44:55 +0300] [13658] [INFO] Booting worker with pid: 13658
+[2024-06-17 15:46:38 +0300] [1111] [INFO] Starting gunicorn 22.0.0
+[2024-06-17 15:46:38 +0300] [1111] [INFO] Listening at: http://127.0.0.1:5007 (1111)
+[2024-06-17 15:46:38 +0300] [1111] [INFO] Using worker: sync
+[2024-06-17 15:46:38 +0300] [1112] [INFO] Booting worker with pid: 1112

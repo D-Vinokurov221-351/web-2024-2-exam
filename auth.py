@@ -58,9 +58,10 @@ def load_user(user_id):
     query = 'SELECT * FROM Users WHERE Users.id=%s'
     user = None
     try:
-        with db.connection().cursor(named_tuple=True) as cursor:
-            cursor.execute(query, (user_id,))
-            user = cursor.fetchone()
+        cursor = db.connection().cursor(named_tuple=True)
+        cursor.execute(query, (user_id,))
+        user = cursor.fetchone()
+        cursor.close()
         if user:
             name = '%s %s %s' % (user.first_name, user.middle_name, user.last_name)
             return User(user.id, user.login, user.rid, name)
@@ -81,10 +82,10 @@ def login():
         query = 'SELECT * FROM Users WHERE Users.login=%s AND Users.hash=SHA2(%s,256)'
         user = None
         try:
-            with db.connection().cursor(named_tuple=True) as cursor:
-                cursor.execute(query, (login, password))
-                user = cursor.fetchone()
-                cursor.close()  # Ensure the cursor is closed after fetching data
+            cursor = db.connection().cursor(named_tuple=True)
+            cursor.execute(query, (login, password))
+            user = cursor.fetchone()
+            cursor.close()
 
             if user:
                 name = '%s %s %s' % (user.first_name, user.middle_name, user.last_name)

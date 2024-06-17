@@ -117,8 +117,9 @@ def show_book(index):
         db.connection().rollback()
         flash(f'При загрузке рецензий произошла ошибка.', 'danger')
 
-    for review in reviews:
-        if review.uid == current_user.id:
-            my_review = review
-            return render_template('show_book.html', values = values, reviews = reviews, skin = skin, about = about, my_review = my_review)
+    if not current_user.is_anonymous:
+        for review in reviews:
+            if review.uid == current_user.id:
+                my_review = review
+                return render_template('show_book.html', values = values, reviews = reviews, skin = skin, about = about, my_review = my_review)
     return render_template('show_book.html', values = values, reviews = reviews, skin = skin, about = about)

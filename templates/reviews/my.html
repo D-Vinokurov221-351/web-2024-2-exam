@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% from '/pagination.html' import pagination %}
+
+{% block content %}
+    <h1 class="my-5">Мои рецензии</h1>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Книга</th>
+                    <th scope="col">Оценка</th>
+                    <th scope="col">Текст</th>
+                    <th scope="col">Статус</th>
+                    <th scope="col">Дата</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for review in reviews %}
+                <tr>
+                    <td>{{ review.book }}</td>
+                    <td>{{ review.mark }}</td>
+                    <td>{{ review.text }}</td>
+                    <td>
+                        {% if review.status == 1 %}
+                        Ожидает проверки
+                        {% elif review.status == 2 %}
+                        Одобрена
+                        {% else %}
+                        Отклонена
+                        {% endif %}
+                    </td>
+                    <td>{{ review.data }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {{ pagination(count, page) }}
+{% endblock %}

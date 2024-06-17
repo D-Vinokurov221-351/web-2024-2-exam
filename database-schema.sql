@@ -26,15 +26,15 @@ CREATE TABLE `Books` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `about` text NOT NULL,
-  `year` year(4) NOT NULL,
   `pub` varchar(50) NOT NULL,
   `author` varchar(50) NOT NULL,
   `pages` int(11) NOT NULL,
   `skin` int(11) NOT NULL,
+  `year` year(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `skin` (`skin`),
   CONSTRAINT `Books_ibfk_1` FOREIGN KEY (`skin`) REFERENCES `Skins` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -121,7 +121,7 @@ CREATE TABLE `Skins` (
   `mime` varchar(250) NOT NULL,
   `md5` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -168,4 +168,4 @@ CREATE TABLE `Users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-16  0:36:27
+-- Dump completed on 2024-06-17 16:59:39

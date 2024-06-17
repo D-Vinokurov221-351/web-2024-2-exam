@@ -26,15 +26,15 @@ CREATE TABLE `Books` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `about` text NOT NULL,
-  `year` year(4) NOT NULL,
   `pub` varchar(50) NOT NULL,
   `author` varchar(50) NOT NULL,
   `pages` int(11) NOT NULL,
   `skin` int(11) NOT NULL,
+  `year` year(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `skin` (`skin`),
   CONSTRAINT `Books_ibfk_1` FOREIGN KEY (`skin`) REFERENCES `Skins` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `Books` (
 
 LOCK TABLES `Books` WRITE;
 /*!40000 ALTER TABLE `Books` DISABLE KEYS */;
-INSERT INTO `Books` VALUES (22,'Даниил','gfhgfhgfhfgh',2024,'Дон','Даниил',250,6);
+INSERT INTO `Books` VALUES (22,'Даниил','gfhgfhgfhfgh','Дон','Даниил',250,6,2014),(27,'Даниил Винокуров','Что-то хорошее','Оскол','Даниил',1000,8,1915);
 /*!40000 ALTER TABLE `Books` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,7 +94,7 @@ CREATE TABLE `GenresBooks` (
 
 LOCK TABLES `GenresBooks` WRITE;
 /*!40000 ALTER TABLE `GenresBooks` DISABLE KEYS */;
-INSERT INTO `GenresBooks` VALUES (22,1),(22,3),(22,5);
+INSERT INTO `GenresBooks` VALUES (22,2),(22,3),(22,5);
 /*!40000 ALTER TABLE `GenresBooks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -129,7 +129,7 @@ CREATE TABLE `Reviews` (
 
 LOCK TABLES `Reviews` WRITE;
 /*!40000 ALTER TABLE `Reviews` DISABLE KEYS */;
-INSERT INTO `Reviews` VALUES (10,22,1,2,'po','2024-06-15 14:09:20',2),(12,22,1,2,'po','2024-06-15 14:09:20',1);
+INSERT INTO `Reviews` VALUES (10,22,1,2,'po','2024-06-15 14:09:20',2),(12,22,1,2,'po','2024-06-17 11:57:20',1);
 /*!40000 ALTER TABLE `Reviews` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -171,7 +171,7 @@ CREATE TABLE `Skins` (
   `mime` varchar(250) NOT NULL,
   `md5` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -180,7 +180,7 @@ CREATE TABLE `Skins` (
 
 LOCK TABLES `Skins` WRITE;
 /*!40000 ALTER TABLE `Skins` DISABLE KEYS */;
-INSERT INTO `Skins` VALUES (6,'userfile','image/jpeg','07e52390f18874ca357add5581c33319'),(7,'userfile','image/png','d1a717562aa2c7b0ffc52c0a9406b4f6');
+INSERT INTO `Skins` VALUES (6,'userfile','image/jpeg','07e52390f18874ca357add5581c33319'),(7,'userfile','image/png','d1a717562aa2c7b0ffc52c0a9406b4f6'),(8,'8fb06c95dfb1486d6d9d0ed059ad6251.png','image/png','8fb06c95dfb1486d6d9d0ed059ad6251');
 /*!40000 ALTER TABLE `Skins` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -248,4 +248,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-16  0:36:52
+-- Dump completed on 2024-06-17 16:59:51
