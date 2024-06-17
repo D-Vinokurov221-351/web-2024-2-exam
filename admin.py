@@ -7,6 +7,7 @@ from app import db
 import os
 import hashlib
 from reviews import admin_required, moder_required
+import nh3
 
 bp_admin = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -44,6 +45,7 @@ def create():
     if request.method == 'POST':
         name = request.form['name']
         about = request.form['about']
+        about = nh3.clean(about)
         author = request.form['author']
         pub = request.form['pub']
         pages = request.form['pages']
@@ -164,6 +166,7 @@ def edit_book(index):
     if request.method == 'POST':
         name = request.form['name']
         about = request.form['about']
+        about = nh3.clean(about)
         author = request.form['author']
         pub = request.form['pub']
         pages = request.form['pages']

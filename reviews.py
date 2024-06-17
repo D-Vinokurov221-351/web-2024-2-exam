@@ -6,6 +6,7 @@ from check_user import CheckUser
 from functools import wraps
 import mysql.connector
 import math
+import nh3
 
 bp_review = Blueprint('review', __name__, url_prefix='/review')
 
@@ -36,6 +37,7 @@ def create(index):
     if request.method == 'POST':
         mark = request.form.get('rating') # Оценка
         text = request.form.get('text') # Текст рецензии
+        text = nh3.clean(text)
         try:
             query = '''
                 insert into Reviews (bid, uid, mark, text, status) values (%s, %s, %s, %s, '1')
